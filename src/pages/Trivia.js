@@ -16,8 +16,8 @@ const Pokemon = styled.div`
     width: 800px;
     height: 800px;
     display: block;
-    background-position: 120px 100px;
-    background-size: 800px 800px;
+    background-position: 80px 80px;
+    background-size: 600px 600px;
     background-repeat: no-repeat;
 `
 
@@ -25,15 +25,27 @@ Pokemon.propTypes = {
     sprite: PropTypes.string
 }
 
-const pokeId = 1 + Math.random() * (151 - 1)
-
+const pokeId = Math.floor(1 + Math.random() * (151 - 1))
 
 class Trivia extends Component {
+
+    constructor() {
+      super()
+      this.state = {
+         image: ''
+      }
+    }
+
+    componentDidMount() {
+      const promise = getPokemonById(pokeId)
+      promise.then(data => this.setState({image: data.image}))
+    }
+
     render() {
-        const response = getPokemonById(pokeId)
+        console.log(this.state);
         return (
             <Background>
-                <Pokemon sprite={response.image} />
+                <Pokemon sprite={this.state.image} />
             </Background>
         );
     }
