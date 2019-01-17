@@ -1,17 +1,18 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import styled from '@emotion/styled';
 import 'normalize.css';
-import PropTypes from 'prop-types';
 import { getAnswer } from '../services/PokeService';
 
+const RESET_INTERVAL = 1500;
+
 const Container = styled.div`
-	width:500px;
+	width:400px;
 	display:block;
 	float:right;
 	z-index:2;
 	text-align: center;
-	margin-right: 150px;
-	top:-350px;
+	margin-right: 180px;
+	top:-550px;
 	position: relative;
 	cursor: pointer;
 	font-size: 2em;
@@ -25,11 +26,12 @@ const Option = styled.div`
 	border-style: solid;
 	border-color: black;
 	border-radius: 0.3em;
-	margin-top: 20px;
+	margin-top: 35px;
 	margin-bottom: 20px;
 	background-color: black;
 	background-opacity:0.4;
 	text-transform: capitalize;
+	padding: 7px;
 
 	&:hover {
 		opacity: 1;
@@ -58,12 +60,13 @@ class Question extends Component {
 		getAnswer(this.props.id, id)
 			.then(
 				data => {
-					console.log(data)
-					if (data.answer == true) {
+					this.props.reveal(RESET_INTERVAL)
+					if (data.answer === true) {
 						this.setState({guess: id, answer: 'correct'})
 					} else {
 						this.setState({guess: id, answer: 'wrong'})
 					}
+					setTimeout(() => { this.setState({guess: null, answer: 'not yet'}) }, RESET_INTERVAL)
 				}
 			)
 	}
@@ -71,13 +74,13 @@ class Question extends Component {
 	render() {
 		const { options: optionsList } = this.props
 		const options = optionsList.map(option => {
-				if (this.state.guess == option.id && this.state.answer == 'wrong') {
+				if (this.state.guess === option.id && this.state.answer === 'wrong') {
 					return (<WrongOption>{option.name}</WrongOption>)
 				}
-				else if (this.state.guess == option.id && this.state.answer == 'correct') {
+				else if (this.state.guess === option.id && this.state.answer === 'correct') {
 					return (<CorrectOption>{option.name}</CorrectOption>)
 				}
-				else if (this.state.answer == 'not yet'){
+				else if (this.state.answer === 'not yet'){
 					return (<Option onClick={() => { this.handleSubmit(option.id) }}>{option.name}</Option>)
 				}
 				else {

@@ -17,12 +17,26 @@ const Background = styled.div`
 const Pokemon = styled.div`
     background-image: url('${props => props.sprite}');
     width: 800px;
-    height: 600px;
+    height: 700px;
     display: block;
-    background-position: 80px 80px;
+    background-position: 80px 60px;
     background-size: 600px 600px;
     background-repeat: no-repeat;
     z-index: 2;
+
+    @keyframes reveal {
+        from { filter: brightness(0%); }
+        to { filter: brightness(100%); }
+    }
+
+    &.reveal {
+        animation-name: reveal;
+        animation-duration: 2s;
+    }
+
+    &.not-reveal {
+        filter: brightness(0%);
+    }
 `;
 
 Pokemon.propTypes = {
@@ -30,25 +44,53 @@ Pokemon.propTypes = {
 };
 
 class Trivia extends Component {
-  state = {
-    image: '',
-    score: 0,
-    options: []
-  };
+  constructor() {
+    super();
+    this.state = {
+      image: '',
+      options: [],
+      reveal: false,
+      score: 0
+    };
+  }
 
-  componentDidMount() {
+  fillQuestion() {
     const promise = getQuestion();
     promise.then(data =>
-      this.setState({ image: data.image, options: data.options, id: data.id })
+      this.setState({
+        image: data.image,
+        options: data.options,
+        id: data.id,
+        reveal: false
+      })
     );
   }
 
+  componentDidMount() {
+    this.fillQuestion();
+  }
+
+  handleReveal(interval) {
+    this.setState({ reveal: true });
+    setTimeout(() => {
+      this.fillQuestion();
+    }, interval);
+  }
+
   render() {
+    let style = 'not-reveal';
+    if (this.state.reveal) {
+      style = 'reveal';
+    }
     return (
       <Background>
         <Score amount={this.state.score} />
-        <Pokemon sprite={this.state.image} />
-        <Question options={this.state.options} id={this.state.id} />
+        <Pokemon sprite={this.state.image} className={style} />
+        <Question
+          options={this.state.options}
+          id={this.state.id}
+          reveal={() => this.handleReveal()}
+        />
       </Background>
     );
   }
