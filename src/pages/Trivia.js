@@ -77,6 +77,14 @@ class Trivia extends Component {
     }, interval);
   }
 
+  incrementScore = () => {
+    this.setState({ score: this.state.score + 1 });
+  };
+
+  resetScore = () => {
+    this.setState({ score: 0 });
+  };
+
   render() {
     let style = 'not-reveal';
     if (this.state.reveal) {
@@ -90,6 +98,8 @@ class Trivia extends Component {
           options={this.state.options}
           id={this.state.id}
           reveal={() => this.handleReveal()}
+          incrementScore={this.incrementScore}
+          resetScore={this.resetScore}
         />
       </Background>
     );

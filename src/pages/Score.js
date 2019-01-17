@@ -3,9 +3,17 @@ import styled from '@emotion/styled';
 import 'normalize.css';
 import PropTypes from 'prop-types';
 
+const Number = styled.span`
+  font-size: 4em;
+  float: right;
+  position: relative;
+  top: 50px;
+  right: 350px;
+`;
+
 class Score extends Component {
   render() {
-    return <span>{this.props.amount}</span>;
+    return <Number>{this.props.amount}</Number>;
   }
 }
 
