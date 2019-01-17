@@ -4,7 +4,6 @@ import ReactDOM from 'react-dom';
 import Trivia from './pages/Trivia'
 import * as serviceWorker from './serviceWorker';
 
-// ReactDOM.render(<App />, document.getElementById('root'));
 ReactDOM.render(<Trivia />, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change

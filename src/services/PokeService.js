@@ -1,19 +1,12 @@
-const url = "https://pokeapi.co/api/v2/pokemon/";
+const url = "http://localhost:3001/api/v1/pokemon/question";
 const axios = require('axios');
 
-function getPokemonById(id) {
-  return axios.get(url + id).then(({data:{name, sprites:{front_default:image}}}) => {
-    return (
-      {
-        name: name,
-        image: image
-      }
-    );
-  })
-  .catch(function (error) {
-    // handle error
-    console.log(error);
-  })
+function getQuestion() {
+  return axios.get(url).then(response => response.data);
 }
 
-export default getPokemonById
+function getAnswer(questionId, pokemonId) {
+  return axios.post(`${url}/${questionId}`, {answer:pokemonId}).then(response => response.data);
+}
+
+export { getQuestion, getAnswer }
