@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import styled from '@emotion/styled';
 import 'normalize.css';
 import { getAnswer } from '../services/PokeService';
+import '../pokemon-font/css/pokemon-font.css';
 
 const RESET_INTERVAL = 1500;
 
@@ -22,6 +23,10 @@ const Option = styled.div`
   width: 100%;
   opacity: 0.7;
   color: white;
+  font-size: 30px;
+  font-smooth: never;
+  -webkit-font-smoothing: none;
+  font-family: 'pokemon-font', monospace;
   border-width: 2px;
   border-style: solid;
   border-color: black;
